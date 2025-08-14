@@ -1,0 +1,6 @@
+{
+  "name": "UNIDADES DE BOMBEROS DE LA CIUDAD",
+  "description": "Una aplicación para asignar oficiales a cargo y registrar la cantidad de personal por cada camión de bomberos en tiempo real.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
