@@ -9,19 +9,21 @@
     <script src="https://unpkg.com/jspdf-autotable@latest/dist/jspdf.plugin.autotable.js"></script>
     <!-- Agregado: Babel Standalone para compilar TSX/JSX en el navegador -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script type="importmap">
+    <!-- Corregido: Se eliminaron las entradas conflictivas del importmap para usar una única versión de React (18.2.0). -->
+    <script type="importmap">
 {
   "imports": {
-    "react/": "https://esm.sh/react@^19.1.0/",
-    "react": "https://esm.sh/react@^19.1.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.1.0/"
+    "react": "https://esm.sh/react@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "react-dom/": "https://esm.sh/react-dom@18.2.0/",
+    "react/": "https://esm.sh/react@18.2.0/"
   }
 }
 </script>
-</head>
+  </head>
   <body class="bg-gray-900">
     <div id="root"></div>
-    <!-- Modificado: Se cambió el tipo de script para que Babel lo procese -->
+    <!-- Se mantiene el script procesado por Babel -->
     <script type="text/babel" data-presets="react,typescript" data-type="module" src="./index.tsx"></script>
   </body>
 </html>
