@@ -7,23 +7,65 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
     <script src="https://unpkg.com/jspdf-autotable@latest/dist/jspdf.plugin.autotable.js"></script>
-    <!-- Agregado: Babel Standalone para compilar TSX/JSX en el navegador -->
+
+    <!-- In-browser transpiler -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Corregido: Se eliminaron las entradas conflictivas del importmap para usar una única versión de React (18.2.0). -->
-    <script type="importmap">
+    <!-- Module loader -->
+    <script src="https://unpkg.com/systemjs@6.14.2/dist/s.min.js"></script>
+    
+    <script type="systemjs-importmap">
+    {
+      "imports": {
+        "react": "https://unpkg.com/react@18.2.0/umd/react.production.min.js",
+        "react-dom/client": "https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"
+      }
+    }
+    </script>
+  <script type="importmap">
 {
   "imports": {
-    "react": "https://esm.sh/react@18.2.0",
-    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
-    "react-dom/": "https://esm.sh/react-dom@18.2.0/",
-    "react/": "https://esm.sh/react@18.2.0/"
+    "react": "https://esm.sh/react@^19.1.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
+    "react/": "https://esm.sh/react@^19.1.1/"
   }
 }
 </script>
-  </head>
+</head>
   <body class="bg-gray-900">
     <div id="root"></div>
-    <!-- Se mantiene el script procesado por Babel -->
-    <script type="text/babel" data-presets="react,typescript" data-type="module" src="./index.tsx"></script>
+    <script>
+      // Configure SystemJS to use Babel for transpilation by overriding the instantiate hook.
+      (function () {
+        const originalInstantiate = System.instantiate;
+        System.instantiate = function (url, parent) {
+          // Check if the file is a TS or TSX file
+          if (url.endsWith('.ts') || url.endsWith('.tsx')) {
+            return fetch(url).then(function (response) {
+              if (!response.ok) {
+                throw new Error("Could not fetch " + url);
+              }
+              return response.text();
+            }).then(function (source) {
+              // Transpile the source code using Babel
+              const transformed = Babel.transform(source, {
+                presets: ['react', 'typescript'],
+                filename: url
+              }).code;
+              // Create a blob from the transformed code
+              const blob = new Blob([transformed], { type: 'application/javascript' });
+              // Create a URL for the blob
+              const blobUrl = URL.createObjectURL(blob);
+              // Let the original instantiate handle the JS module
+              return originalInstantiate.call(System, blobUrl, parent);
+            });
+          }
+          // For all other files, use the original instantiate function
+          return originalInstantiate.apply(this, arguments);
+        };
+      })();
+
+      // Start the application by importing the main entry point
+      System.import('./index.tsx').catch(console.error);
+    </script>
   </body>
 </html>
