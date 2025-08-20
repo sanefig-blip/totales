@@ -19,8 +19,11 @@
         "react-dom/client": "https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"
       },
       "meta": {
-        "*.ts": { "loader": "babel", "babelOptions": { "typescript": true } },
-        "*.tsx": { "loader": "babel", "babelOptions": { "react": true, "typescript": true } }
+        "./*.ts": { "loader": "babel", "babelOptions": { "typescript": true } },
+        "./*.tsx": { "loader": "babel", "babelOptions": { "react": true, "typescript": true } },
+        "./components/*.tsx": { "loader": "babel", "babelOptions": { "react": true, "typescript": true } },
+        "./contexts/*.tsx": { "loader": "babel", "babelOptions": { "react": true, "typescript": true } },
+        "./components/icons/*.tsx": { "loader": "babel", "babelOptions": { "react": true, "typescript": true } }
       }
     }
     </script>
