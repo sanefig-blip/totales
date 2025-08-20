@@ -17,6 +17,10 @@
       "imports": {
         "react": "https://unpkg.com/react@18.2.0/umd/react.production.min.js",
         "react-dom/client": "https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"
+      },
+      "meta": {
+        "*.ts": { "loader": "babel", "babelOptions": { "typescript": true } },
+        "*.tsx": { "loader": "babel", "babelOptions": { "react": true, "typescript": true } }
       }
     }
     </script>
@@ -33,22 +37,6 @@
   <body class="bg-gray-900">
     <div id="root"></div>
     <script>
-      // Configure SystemJS
-      System.config({
-        // Set the base URL for resolving relative paths
-        baseURL: './',
-        // Tell SystemJS to use Babel for .ts and .tsx files
-        meta: {
-          '*.ts': { loader: 'babel' },
-          '*.tsx': { loader: 'babel' }
-        },
-        // Configure Babel
-        babelOptions: {
-          react: true,      // Enable JSX transpilation
-          typescript: true  // Enable TypeScript transpilation
-        }
-      });
-
       // Load the application's entry point
       System.import('./index.tsx').catch(function(err) { console.error(err); });
     </script>
